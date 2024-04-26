@@ -2,4 +2,7 @@
 
 # install  
 
-``` go install github.com/abdulsec/dsl@latest ```
+``` 
+go install github.com/abdulsec/dsl@latest
+
+```
