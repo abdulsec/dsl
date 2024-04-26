@@ -2,17 +2,13 @@ package main
 
 import (
     "bufio"
+    "flag"
     "fmt"
     "os"
     "regexp"
 )
 
-func dsl(pattern string) {
-    if pattern == "" {
-        fmt.Println("Usage: dsl <pattern>")
-        os.Exit(1)
-    }
-
+func dsl(pattern string, showMatching bool) {
     // Compile the regular expression pattern
     regex, err := regexp.Compile(pattern)
     if err != nil {
@@ -24,8 +20,9 @@ func dsl(pattern string) {
     scanner := bufio.NewScanner(os.Stdin)
     for scanner.Scan() {
         line := scanner.Text()
-        // If the line does not match the pattern, print it
-        if !regex.MatchString(line) {
+        // If the line matches the pattern and showMatching is true, print it
+        // If the line does not match the pattern and showMatching is false, print it
+        if regex.MatchString(line) == showMatching {
             fmt.Println(line)
         }
     }
@@ -38,10 +35,18 @@ func dsl(pattern string) {
 }
 
 func main() {
-    if len(os.Args) < 2 {
-        fmt.Println("Usage: dsl <pattern>")
+    // Define command-line flags
+    showMatching := flag.Bool("s", false, "Show only lines that match the pattern")
+    flag.Parse()
+
+    // Extract the pattern from command-line arguments
+    args := flag.Args()
+    if len(args) < 1 {
+        fmt.Println("Usage: dsl [-s] <pattern>")
         os.Exit(1)
     }
-    dsl(os.Args[1])
-}
+    pattern := args[0]
 
+    // Call dsl function with the pattern and showMatching flag
+    dsl(pattern, *showMatching)
+}
