@@ -1,8 +1,5 @@
-# dsl
-this a bugbounty tools  it don't show line  that contains a word
 
 
+# install  
 
-install  
-
-go install github.com/abdulsec/dsl@latest
+``` go install github.com/abdulsec/dsl@latest ```
